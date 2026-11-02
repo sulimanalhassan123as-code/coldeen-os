@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { api } from './api.js';
 import Frame from './Frame.jsx';
-import { useLiveDays, monthGrid, isoOf, prettyDay, saveTicket } from './live.js';
+import { useLiveDays, monthGrid, isoOf, prettyDay, saveTicket, useShop } from './live.js';
 
 const SERVICES = [
   { name: 'Screen & display', icon: '🖥️' },
@@ -15,6 +15,7 @@ const SERVICES = [
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export default function Book({ theme, setTheme }) {
+  const shop = useShop();
   const d7 = useLiveDays(8);
   const todayIso = isoOf(new Date());
   const [date, setDate] = useState(todayIso);
@@ -55,7 +56,7 @@ export default function Book({ theme, setTheme }) {
     setBusy(false);
   };
 
-  const waMsg = done ? `https://wa.me/233504052487?text=` + encodeURIComponent(`Hello Golden Phone Repair, my ticket is ${done.code} for ${prettyDay(done.date)} at ${done.slot}. Name: ${done.name || ''}.`) : '#';
+  const waMsg = done ? `https://wa.me/${shop.wa}?text=` + encodeURIComponent(`Hello ${shop.name}, my ticket is ${done.code} for ${prettyDay(done.date)} at ${done.slot}. Name: ${done.name || ''}.`) : '#';
 
   const copy = async () => {
     try { await navigator.clipboard.writeText(done.code); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch (_) { setCopied(false); }

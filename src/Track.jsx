@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api, cedi } from './api.js';
 import Frame from './Frame.jsx';
-import { myTickets, prettyDay } from './live.js';
+import { myTickets, prettyDay, useShop } from './live.js';
 
 const STEPS = [
   { k: 'received', label: 'Received', hint: 'Your phone is logged at the shop' },
@@ -29,6 +29,7 @@ const fmt = (from, to, i, idx) => {
 };
 
 export default function Track({ initialCode, theme, setTheme }) {
+  const shop = useShop();
   const [code, setCode] = useState(initialCode || '');
   const [job, setJob] = useState(null);
   const [err, setErr] = useState('');
@@ -59,7 +60,7 @@ export default function Track({ initialCode, theme, setTheme }) {
   }, [job && job.code, job && job.status]); // eslint-disable-line
 
   const idx = job ? idxOf(job.status) : -1;
-  const wa = 'https://wa.me/233504052487?text=' + encodeURIComponent('Hello Golden Phone Repair, about my repair ' + (job ? job.code : ''));
+  const wa = `https://wa.me/${shop.wa}?text=` + encodeURIComponent(`Hello ${shop.name}, about my repair ` + (job ? job.code : ''));
   const base = job ? (job.created_date || new Date().toISOString()) : null;
   const chip = job ? ({ received: 'Received', diagnosing: 'Diagnosing', parts: 'Awaiting parts', repairing: 'In repair', ready: 'Ready', collected: 'Collected', cancelled: 'Cancelled' }[job.status] || job.status) : '';
 
@@ -100,7 +101,7 @@ export default function Track({ initialCode, theme, setTheme }) {
       {!job && !err && (
         <div className="s-ok neu-flat" style={{ marginTop: 18 }}>
           <p style={{ marginTop: 0 }}>Nothing loaded yet. Enter your code above to see exactly where your phone is.</p>
-          <p style={{ marginBottom: 0 }}><a style={{ color: 'var(--primary-accent)', fontWeight: 800 }} href="#/track?code=COL-4821">See a sample ticket: COL-4821</a></p>
+          <p style={{ marginBottom: 0 }}>No code yet? <a style={{ color: 'var(--primary-accent)', fontWeight: 800 }} href="#/book">Book a repair</a> and a tracking code is created for you straight away.</p>
         </div>
       )}
 

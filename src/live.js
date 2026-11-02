@@ -17,6 +17,7 @@ export function useLiveHome(interval = 12000) {
         const changed = rev.current !== null && d.rev !== rev.current;
         rev.current = d.rev;
         setData(d);
+        cacheShop(d.settings || {});
         setErr('');
         if (changed && silent) setUpdated(Date.now());
       })
@@ -107,3 +108,31 @@ export const prettyDay = (iso) => {
   const d = new Date(iso + 'T00:00:00');
   return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
 };
+
+
+/* one cached copy of the shop details, so no page has to hardcode a number or a name */
+const SHOP_KEY = 'gp_shop_v1';
+const readShop = () => { try { return JSON.parse(localStorage.getItem(SHOP_KEY) || 'null'); } catch (_) { return null; } };
+export const cacheShop = (set) => {
+  try {
+    const keep = {
+      name: set.shop_name || 'COLDEEN',
+      wa: String(set.whatsapp || '233504052487').replace(/[^0-9]/g, ''),
+      phone: set.phone || '0504052487',
+      warranty: set.warranty || '3-month warranty after you collect',
+      turnaround: set.turnaround || 'most repairs within 24 hours',
+    };
+    localStorage.setItem(SHOP_KEY, JSON.stringify(keep));
+  } catch (_) { /* private mode */ }
+};
+export function useShop() {
+  const fallback = { name: 'COLDEEN', wa: '233504052487', phone: '0504052487',
+    warranty: '3-month warranty after you collect', turnaround: 'most repairs within 24 hours' };
+  const [shop, setShop] = useState(() => readShop() || fallback);
+  useEffect(() => {
+    const cached = readShop();
+    if (cached && cached.name) { setShop(cached); return; }
+    api.home().then(d => { cacheShop(d.settings || {}); setShop(readShop() || fallback); }).catch(() => {});
+  }, []); // eslint-disable-line
+  return shop;
+}

@@ -46,7 +46,7 @@ export default function Site({ theme, setTheme }) {
     stats.ready ? <span key="b"><b>{stats.ready}</b> ready for pickup</span> : null,
     <span key="c"><b>{stats.today ?? 0}</b> appointments today</span>,
     <span key="d">{s.hours || 'Mon to Sat · 9am to 7pm'}</span>,
-    <span key="e">{s.warranty || '3 months warranty'}</span>,
+    <span key="e">{s.warranty || '3-month warranty after you collect'}</span>,
   ].filter(Boolean);
 
   return (
@@ -87,7 +87,7 @@ export default function Site({ theme, setTheme }) {
         <div className="s-chips">
           <span className="s-chip neu-btn"><i />Workshop open</span>
           <span className="s-chip neu-btn"><b>{stats.today ?? 0}</b>&nbsp;appointments today</span>
-          <span className="s-chip neu-btn">Avg turnaround&nbsp;<b>4h</b></span>
+          <span className="s-chip neu-btn">{s.turnaround || "most repairs within 24 hours"}</span>
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export default function Site({ theme, setTheme }) {
         <div className="s-card neu-flat">
           <div className="s-title">Why {name.split(' ')[0]}</div>
           {[
-            s.warranty || '3 months warranty on every repair',
+            s.warranty || '3-month warranty after you collect your phone',
             'Original-grade parts, tested before you pay',
             'Pay on collection, no upfront payment',
             'Receipt on WhatsApp, live tracking from drop-off',

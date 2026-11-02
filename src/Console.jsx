@@ -143,7 +143,7 @@ function Board({ adminKey, onLock }) {
               <div className="kpi">
                 <div className="kh"><div className="ico" style={{ background: 'rgba(240,207,122,.14)', color: '#f0cf7a' }}>₵</div><div className="l">Revenue today</div></div>
                 <div className="v">{cedi(stats.revenueToday)}</div>
-                <div className="up">▲ 18% vs. yesterday</div>
+                <div className="s">{(stats.pipeline || 0) > 0 ? cedi(stats.pipeline) + " still in the works" : "Paid repairs, today"}</div>
                 <Spark color="#39c07c" pts={[3, 4, 3, 5, 4, 6, 5, 7, 6, 9, 8, 11]} />
               </div>
               <div className="kpi">
@@ -159,9 +159,10 @@ function Board({ adminKey, onLock }) {
                 <div className="bar"><i style={{ width: Math.round(((stats.ready || 0) / (jobs.length || 1)) * 100) + '%', background: '#f0a13a' }} /></div>
               </div>
               <div className="kpi">
-                <div className="kh"><div className="ico" style={{ background: 'rgba(155,107,255,.16)', color: '#b79bff' }}>▣</div><div className="l">Scan tickets sold</div></div>
-                <div className="v">12</div>
-                <div className="up">▲ 33% vs. yesterday</div>
+                <div className="kh"><div className="ico" style={{ background: 'rgba(155,107,255,.16)', color: '#b79bff' }}>▣</div><div className="l">Appointments today</div></div>
+                <div className="v">{stats.bookingsToday || 0}</div>
+                <div className="s">booked from the website</div>
+                <div className="bar"><i style={{ width: Math.min(100, (stats.bookingsToday || 0) * 20) + '%', background: '#9b6bff' }} /></div>
                 <Spark color="#9b6bff" pts={[2, 2, 3, 2, 4, 3, 5, 4, 6, 6, 8, 9]} />
               </div>
             </div>
@@ -234,8 +235,11 @@ function Board({ adminKey, onLock }) {
 
         {tab === 'bookings' && d && (
           <>
-            <h2>Bookings</h2>
-            <BookingsTable rows={bookings} act={act} empty="No bookings yet." />
+            <div className="rowBetween">
+              <h2 style={{ margin: 0 }}>Bookings</h2>
+            </div>
+            <DayCloser act={act} closedDays={bookings.filter(b => b.status === 'closed').map(b => b.date)} />
+            <BookingsTable rows={bookings.filter(b => b.status !== 'closed')} act={act} empty="No bookings yet." />
           </>
         )}
 
@@ -297,8 +301,8 @@ function Board({ adminKey, onLock }) {
         <aside className="rightRail">
           <h3>📅 Today</h3>
           <div className="dt">{new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</div>
-          <div className="rowBetween" style={{ marginBottom: 10 }}><b style={{ fontSize: '.88rem' }}>Appointments</b><span className="chipS">{bookings.filter(b => b.date === today()).length}</span></div>
-          {bookings.filter(b => b.date === today()).slice(0, 6).map(b => (
+          <div className="rowBetween" style={{ marginBottom: 10 }}><b style={{ fontSize: '.88rem' }}>Appointments</b><span className="chipS">{bookings.filter(b => b.date === today() && b.status !== "closed").length}</span></div>
+          {bookings.filter(b => b.date === today() && b.status !== "closed").slice(0, 6).map(b => (
             <div className="apt" key={b.id}>
               <div className="at"><span>{b.slot}</span><span className={'st ' + b.status}>{b.status === 'done' ? '✓ Collected' : b.status === 'cancelled' ? 'Cancelled' : 'Confirmed'}</span></div>
               <div className="an">
@@ -603,6 +607,40 @@ function ServicesTab({ d, adminKey, onSaved }) {
             <label>Starting price in cedis (0 = ask in shop)</label><input inputMode="numeric" value={edit.price_from} onChange={e => setEdit({ ...edit, price_from: e.target.value })} />
             <label>Description</label><textarea rows={3} value={edit.desc} onChange={e => setEdit({ ...edit, desc: e.target.value })} />
             <button className="btn gold" style={{ width: '100%', marginTop: 16, padding: 14 }} onClick={() => save(edit, edit.original)}>Save service</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+/* ================= close a day so nobody can book it ================= */
+function DayCloser({ act, closedDays }) {
+  const [date, setDate] = useState('');
+  const [busy, setBusy] = useState(false);
+  const toggle = async (d) => {
+    if (!d) return;
+    setBusy(true);
+    await act('dayToggle', { date: d });
+    setBusy(false);
+    setDate('');
+  };
+  return (
+    <div className="panel" style={{ marginTop: 14, padding: 14 }}>
+      <b style={{ fontSize: '.9rem' }}>Close a day (public holiday, travel, rest)</b>
+      <div className="mut" style={{ fontSize: '.76rem', marginTop: 2 }}>A closed day never shows any time slot on the website, so nobody can book it.</div>
+      <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+        <input type="date" value={date} onChange={e => setDate(e.target.value)} style={{ maxWidth: 200 }} />
+        <button className="btn sm" disabled={!date || busy} onClick={() => toggle(date)}>{busy ? 'Saving…' : 'Close this day'}</button>
+      </div>
+      {closedDays.length > 0 && (
+        <div style={{ marginTop: 12 }}>
+          <div className="mut" style={{ fontSize: '.74rem', fontWeight: 800, marginBottom: 6 }}>Closed days</div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {closedDays.map(d => (
+              <button key={d} className="btn sm" onClick={() => toggle(d)}>{d} ✕ reopen</button>
+            ))}
           </div>
         </div>
       )}
