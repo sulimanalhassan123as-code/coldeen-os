@@ -211,6 +211,8 @@ export default function Site({ theme, setTheme }) {
 
       <div className="s-foot">
         {name} · Mobile Shop · {s.since ? 'Since ' + s.since : 'Accra'}<br />
+        <a href="#/guide" style={{ opacity: .75 }}>📖 How to use</a>
+        <span style={{ opacity: .3 }}> · </span>
         <a href="#/portal" style={{ opacity: .6 }}>Owner console</a>
       </div>
     </Frame>

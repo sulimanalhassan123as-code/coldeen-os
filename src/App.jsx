@@ -3,6 +3,7 @@ import Site from './Site.jsx';
 import Book from './Book.jsx';
 import Track from './Track.jsx';
 import Console from './Console.jsx';
+import Guide from './Guide.jsx';
 import { useTheme } from './Frame.jsx';
 
 function parse() {
@@ -27,6 +28,7 @@ export default function App() {
   useEffect(() => { document.documentElement.classList.toggle('portalMode', isPortal); }, [isPortal]);
 
   if (isPortal) return <Console />;
+  if (route.path.startsWith('#/guide')) return <Guide theme={theme} setTheme={setTheme} />;
   if (route.path.startsWith('#/book')) return <Book theme={theme} setTheme={setTheme} />;
   if (route.path.startsWith('#/track')) return <Track initialCode={route.q.get('code') || ''} theme={theme} setTheme={setTheme} />;
   return <Site theme={theme} setTheme={setTheme} />;

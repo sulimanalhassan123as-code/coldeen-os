@@ -517,3 +517,76 @@ td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.05);vertical-alig
 .nav{max-width:100vw}
 img,svg,video{max-width:100%}
 .hero,.hero .in,.wrap{max-width:100%}
+
+/* ============================================================
+   HOW TO USE GUIDE  (all classes prefixed .gd- so nothing else moves)
+   ============================================================ */
+.gd{max-width:900px;margin:0 auto;padding:22px 16px 130px}
+.gd-hero{text-align:center;padding:30px 22px;border-radius:26px;margin-bottom:18px}
+.gd-badge{display:inline-block;letter-spacing:.22em;font-size:.66rem;font-weight:900;color:var(--gold2);
+  padding:7px 14px;border-radius:999px;background:rgba(var(--acc-rgb),.12);margin-bottom:14px}
+.gd h1{font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.1;margin:0 0 10px}
+.gd-lead{color:var(--mut);font-size:.92rem;line-height:1.65;max-width:600px;margin:0 auto}
+.gd-switch{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.gd-tab{border:0;cursor:pointer;font:inherit;font-weight:800;font-size:.86rem;padding:13px 20px;border-radius:999px;
+  color:var(--txt);background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);transition:.18s}
+.gd-tab:hover{transform:translateY(-2px)}
+.gd-tab.on{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a0b10;
+  box-shadow:0 10px 30px -12px rgba(var(--acc-rgb),.8)}
+.gd-print{margin-left:auto}
+.gd-intro{padding:22px;border-radius:24px;margin-bottom:16px}
+.gd-intro h2{font-size:1.15rem;margin:0 0 6px}
+.gd-sub{color:var(--mut);font-size:.84rem;line-height:1.6;margin:0}
+.gd-card{padding:22px;border-radius:24px;margin-bottom:16px}
+.gd-card h3{font-size:1rem;margin:0 0 12px}
+.gd-step{padding:20px;border-radius:24px;margin-bottom:14px}
+.gd-stepHead{display:flex;gap:14px;align-items:flex-start}
+.gd-num{flex:0 0 auto;width:38px;height:38px;border-radius:13px;display:grid;place-items:center;font-weight:900;font-size:.95rem;
+  color:#0a0b10;background:linear-gradient(135deg,var(--gold),var(--gold2))}
+.gd-stepHead h3{font-size:1rem;margin:0 0 4px;line-height:1.35}
+.gd-rows{margin-top:14px;display:grid;gap:9px}
+.gd-row{display:grid;grid-template-columns:30px 150px 1fr;gap:10px;align-items:start;
+  padding:11px 13px;border-radius:15px;background:rgba(255,255,255,.035);font-size:.83rem;line-height:1.55}
+.gd-row b{font-weight:800}
+.gd-row span:last-child{color:var(--mut)}
+.gd-rowIco{font-size:.95rem}
+.gd-after{margin-top:13px;padding:12px 14px;border-radius:15px;font-size:.82rem;line-height:1.6;
+  background:rgba(var(--acc-rgb),.1);box-shadow:inset 0 0 0 1px rgba(var(--acc-rgb),.18)}
+.gd-mock{margin-top:16px;border-radius:20px;overflow:hidden;background:rgba(0,0,0,.32);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);max-width:340px}
+.gd-mockBar{display:flex;align-items:center;gap:6px;padding:9px 12px;background:rgba(255,255,255,.05)}
+.gd-mockBar span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22)}
+.gd-mockBar b{margin-left:8px;font-size:.66rem;letter-spacing:.06em;color:var(--mut);text-transform:uppercase}
+.gd-mockBody{padding:12px}
+.gd-mockRow{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:12px;font-size:.78rem;
+  background:rgba(255,255,255,.04);margin-bottom:7px}
+.gd-mockRow:last-child{margin-bottom:0}
+.gd-mockRow.hot{background:rgba(var(--acc-rgb),.14);box-shadow:inset 0 0 0 1px rgba(var(--acc-rgb),.25);font-weight:800}
+.gd-mockRow i{font-style:normal}
+.gd-cta{padding:24px;border-radius:24px;text-align:center;margin-bottom:16px}
+.gd-ctaBtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0 10px}
+.gd-ctaBtns .btn{text-decoration:none}
+.gd-fine{color:var(--mut);font-size:.74rem;margin:0}
+.gd-sign{text-align:center;letter-spacing:.24em;font-size:.62rem;font-weight:800;color:var(--mut);opacity:.6;padding-top:10px}
+
+/* readable on a phone without squeezing */
+@media(max-width:620px){
+  .gd{padding:16px 12px 120px}
+  .gd-hero{padding:24px 16px}
+  .gd-row{grid-template-columns:26px 1fr;grid-template-areas:"ico name" ". text"}
+  .gd-row b{grid-area:name}
+  .gd-row span:last-child{grid-area:text}
+  .gd-rowIco{grid-area:ico}
+  .gd-print{margin-left:0;width:100%}
+}
+
+/* printing: only the guide, clean black on white */
+@media print{
+  .s-head,.s-tabs,.s-wa,.gd-noprint,.s-sheet{display:none!important}
+  body,.soft,.s-wrap{background:#fff!important}
+  .gd,.gd *{color:#111!important;box-shadow:none!important;background:none!important;text-shadow:none!important}
+  .gd{padding:0;max-width:none}
+  .gd-step,.gd-card,.gd-intro,.gd-hero{page-break-inside:avoid;border:1px solid #d8d8d8;margin-bottom:10px}
+  .gd-num{border:1px solid #111}
+  .gd-mockRow{border:1px solid #e2e2e2}
+}

@@ -115,9 +115,10 @@ function Board({ adminKey, onLock }) {
         {NAV.map(([k, l, ic]) => (
           <button key={k} className={'it' + (tab === k ? ' on' : '')} onClick={() => setTab(k)}>{ic}{l}</button>
         ))}
-        <div style={{ display: 'flex', gap: 8, padding: '14px 6px 0' }}>
+        <div style={{ display: 'flex', gap: 8, padding: '14px 6px 0', flexWrap: 'wrap' }}>
           <button className="btn sm" onClick={load}>Refresh</button>
           <button className="btn sm" onClick={onLock}>Lock</button>
+          <a className="btn sm" href="#/guide" style={{ textDecoration: 'none' }}>📖 Guide</a>
         </div>
         <div className="sideFoot"><img src="/img/logo-icon.png" alt="" style={{ width: 46, height: 46, borderRadius: 12, marginBottom: 8 }} /><div style={{ letterSpacing: '.18em', fontWeight: 800, color: '#f0cf7a' }}>COLDEEN</div>Phone Repair Shop<br />Fix · Restore · Keep You Connected</div>
       </aside>
@@ -301,7 +302,7 @@ function Board({ adminKey, onLock }) {
         <aside className="rightRail">
           <h3>📅 Today</h3>
           <div className="dt">{new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</div>
-          <div className="rowBetween" style={{ marginBottom: 10 }}><b style={{ fontSize: '.88rem' }}>Appointments</b><span className="chipS">{bookings.filter(b => b.date === today() && b.status !== "closed").length}</span></div>
+          <div className="rowBetween" style={{ marginBottom: 10 }}><b style={{ fontSize: '.88rem' }}>Appointments</b><span className="chipS">{bookings.filter(b => b.date === today() && b.status === "confirmed").length}</span></div>
           {bookings.filter(b => b.date === today() && b.status !== "closed").slice(0, 6).map(b => (
             <div className="apt" key={b.id}>
               <div className="at"><span>{b.slot}</span><span className={'st ' + b.status}>{b.status === 'done' ? '✓ Collected' : b.status === 'cancelled' ? 'Cancelled' : 'Confirmed'}</span></div>
