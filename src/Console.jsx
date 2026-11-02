@@ -99,6 +99,12 @@ function Board({ adminKey, onLock }) {
   const act = async (action, data) => { await api.admin(adminKey, action, data); load(); };
 
   const jobs = (d && d.jobs) || [];
+  const shopSet = (d && d.settings) || {};
+  const ownerName = (shopSet.owner_name || '').trim() || 'Shop Owner';
+  const ownerRole = (shopSet.owner_role || '').trim() || 'Shop Owner';
+  const first = ownerName.split(/\s+/)[0] || 'there';
+  const hr = new Date().getHours();
+  const hello = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
   const stats = (d && d.stats) || {};
   const bookings = (d && d.bookings) || [];
 
@@ -123,13 +129,13 @@ function Board({ adminKey, onLock }) {
           <>
             <div className="welcome">
               <div>
-                <h2>Good morning, Daniel <span className="crown">♛</span></h2>
+                <h2>{hello}, {first} <span className="crown">♛</span></h2>
                 <p className="mut" style={{ fontSize: '.86rem', marginTop: 4 }}>Here's what's happening at your shop today.</p>
               </div>
               <div className="who">
                 <button className="btn gold sm" onClick={() => setModal({ type: 'job', data: {} })}>+ New job</button>
-                <div className="av">D</div>
-                <div><b style={{ fontSize: '.86rem' }}>Daniel Mensah</b><div className="mut" style={{ fontSize: '.7rem' }}>Shop Owner</div></div>
+                <div className="av">{ownerName.charAt(0).toUpperCase()}</div>
+                <div><b style={{ fontSize: '.86rem' }}>{ownerName}</b><div className="mut" style={{ fontSize: '.7rem' }}>{ownerRole}</div></div>
               </div>
             </div>
 
@@ -485,6 +491,7 @@ function Settings({ d, adminKey, onSaved }) {
     whatsapp: s.whatsapp || '', address: s.address || '', hours: s.hours || '',
     warranty: s.warranty || '', technicians: s.technicians || '',
     notice: s.notice || '', map_link: s.map_link || '', booking_open: s.booking_open || '1',
+    owner_name: s.owner_name || '', owner_role: s.owner_role || 'Shop Owner',
     showcase_model: s.showcase_model || 'iPhone 13',
     showcase_service: s.showcase_service || 'screen',
     showcase_face: s.showcase_face || 'front',
@@ -498,6 +505,10 @@ function Settings({ d, adminKey, onSaved }) {
     <div className="panel" style={{ maxWidth: 560 }}>
       <h2 style={{ marginTop: 0 }}>Shop details</h2>
       <label>Shop name</label><input value={f.shop_name} onChange={e => setF({ ...f, shop_name: e.target.value })} />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        <div><label>Your name (shown at the top of the console)</label><input value={f.owner_name} onChange={e => setF({ ...f, owner_name: e.target.value })} placeholder="e.g. Sulley Alhassan" /></div>
+        <div><label>Your title</label><input value={f.owner_role} onChange={e => setF({ ...f, owner_role: e.target.value })} placeholder="Shop Owner" /></div>
+      </div>
       <label>Tagline</label><input value={f.tagline} onChange={e => setF({ ...f, tagline: e.target.value })} />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div><label>Phone</label><input value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} /></div>
