@@ -3,6 +3,7 @@ import { api, cedi } from './api.js';
 import Frame from './Frame.jsx';
 import Phone3D from './Phone3D.jsx';
 import { useLiveHome } from './live.js';
+import InstallSheet from './Install.jsx';
 
 const go = (h) => { window.location.hash = h; };
 const isPhoto = (v) => /^https?:\/\//.test(String(v || ''));
@@ -12,6 +13,7 @@ export default function Site({ theme, setTheme }) {
   const [code, setCode] = useState('');
   const [flash, setFlash] = useState(false);
   const [installEvt, setInstallEvt] = useState(null);
+  const [instOpen, setInstOpen] = useState(false);
 
   useEffect(() => { if (installEvt === undefined) return; }, [installEvt]);
   useEffect(() => {
@@ -98,7 +100,7 @@ export default function Site({ theme, setTheme }) {
       </section>
 
       <div className="s-install">
-        <button className="neu-btn" onClick={install}>📲 Install App on Your Phone</button>
+        <button className="neu-btn" onClick={() => setInstOpen(true)}>📲 Install App on Your Phone</button>
       </div>
 
       <div className="s-ticker neu-flat">
@@ -215,6 +217,8 @@ export default function Site({ theme, setTheme }) {
         <span style={{ opacity: .3 }}> · </span>
         <a href="#/portal" style={{ opacity: .6 }}>Owner console</a>
       </div>
+
+      <InstallSheet open={instOpen} onClose={() => setInstOpen(false)} />
     </Frame>
   );
 }

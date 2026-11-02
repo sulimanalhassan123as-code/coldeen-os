@@ -590,3 +590,28 @@ img,svg,video{max-width:100%}
   .gd-num{border:1px solid #111}
   .gd-mockRow{border:1px solid #e2e2e2}
 }
+
+/* ---------- install helper sheet ---------- */
+.in-wrap{position:fixed;inset:0;z-index:90;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(0,0,0,.62);backdrop-filter:blur(6px);padding:0}
+.in-sheet{position:relative;width:100%;max-width:520px;max-height:88vh;overflow:auto;
+  border-radius:26px 26px 0 0;padding:24px 20px 26px;animation:inUp .26s ease}
+@keyframes inUp{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+.in-sheet h3{margin:0 0 8px;font-size:1.08rem;line-height:1.35;padding-right:34px}
+.in-lead{color:var(--mut);font-size:.85rem;line-height:1.6;margin:0 0 16px}
+.in-x{position:absolute;top:14px;right:14px;border:0;cursor:pointer;width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.08);color:var(--txt);font-size:.9rem}
+.in-rows{display:grid;gap:9px;margin-bottom:14px}
+.in-row{display:grid;grid-template-columns:28px 1fr;grid-template-areas:"i t" ". s";gap:3px 10px;
+  padding:11px 13px;border-radius:15px;background:rgba(255,255,255,.045);font-size:.82rem;line-height:1.55}
+.in-row b{grid-area:t}
+.in-row span:last-child{grid-area:s;color:var(--mut)}
+.in-ico{grid-area:i;font-size:.95rem}
+.in-btns{display:flex;gap:9px;flex-wrap:wrap;margin:4px 0 12px}
+.in-btns .btn{text-decoration:none;flex:1 1 auto;justify-content:center;text-align:center}
+.in-big{width:100%;margin:0 0 14px;justify-content:center;font-size:.95rem;padding:15px}
+.in-fine{color:var(--mut);font-size:.74rem;line-height:1.55;margin:0 0 12px}
+.in-foot{padding-top:6px;border-top:1px solid rgba(255,255,255,.07);margin-top:6px}
+.in-foot .btn{width:100%;justify-content:center;text-decoration:none}
+.gd-warn{margin-top:11px;padding:12px 14px;border-radius:15px;font-size:.82rem;line-height:1.6;
+  background:rgba(255,170,60,.12);box-shadow:inset 0 0 0 1px rgba(255,170,60,.28);color:#ffd9a8}

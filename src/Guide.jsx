@@ -17,6 +17,7 @@ const CUSTOMER_STEPS = [
       ['💻', 'Computer', 'Nothing to install. The link works in any browser.'],
     ],
     after: 'A COLDEEN icon appears with your other apps. Open it like WhatsApp. No typing the link again, no browser bar.',
+    warn: 'If you opened this link from Telegram, WhatsApp or Facebook, install will not show up — those mini browsers block it. Tap ⋮ → “Open in browser” first, then come back here.',
   },
   {
     ico: '🛠️',
@@ -256,6 +257,7 @@ function Step({ n, step }) {
           </div>
         ))}
       </div>
+      {step.warn && <div className="gd-warn">⚠️ {step.warn}</div>}
       {step.after && <div className="gd-after">💡 {step.after}</div>}
     </article>
   );
